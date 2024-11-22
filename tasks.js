@@ -15,7 +15,7 @@ const tasksList = document.getElementById('tasksList')
 
 
 function renderListReadMode(task) {
-    tasksList.innerHTML += `<li> ${task} </li>`;
+    return task
     }
     
 function addTodo() {
@@ -25,19 +25,23 @@ function addTodo() {
 
 // Initialize the view
 for (const task of tasks) { 
-    console.log(task)
     tasksList.append(renderListReadMode(task))
    }
 
-input.addEventListener('input', () => { 
-    btn.disabled = input.value.length < 3
-    })
 
+// when typying enabel the ADD button after atleast three words are typed
+input.addEventListener('input', () => btn.disabled  = input.value.length<3 )
+
+
+
+// when enter is pressed an atleast three words are typed 
 input.addEventListener('keydown', ({ key }) => { 
 if (key === 'Enter' && input.value.length >= 3) {
 addTodo()
 }
 })
+
+// when button clicked
 btn.addEventListener('click', () => { 
 addTodo()
 })
