@@ -1,0 +1,13 @@
+body{
+    background-color: darkolivegreen;
+    font-family:'Courier New', Courier, monospace;   
+}
+header{
+    text-align: center;
+    font-size: large;
+}
+#todo {
+    text-align: center;
+    background-color: greenyellow;
+    line-height: 40px;
+}
