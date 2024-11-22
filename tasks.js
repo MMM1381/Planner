@@ -15,11 +15,38 @@ const tasksList = document.getElementById('tasksList')
 
 
 function renderListReadMode(task) {
-    return task
-    }
+    const li = document.createElement('li') 
+    const span = document.createElement('span') 
+    const button = document.createElement('button') 
+
+
+    span.textContent = task
+    span.addEventListener('dblclick', () => { 
+
+        const idx = tasks.indexOf(task)
+            tasksList.replaceChild( 
+            renderTodoInEditMode(task),
+            tasksList.childNodes[idx]
+        )
+    })
+
+    li.append(span)
+
+    button.innerHTML = '&#10004;'
+    button.style.margin='20px'
+
+    button.addEventListener('click', () => { 
+        const idx = tasks.indexOf(task)
+        removeTodo(idx)
+    })
+
+
+    li.append(button)
+    return li
+}
     
 function addTodo() {
-
+    
     input.value = ''
 }
 
