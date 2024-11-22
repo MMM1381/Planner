@@ -3,11 +3,38 @@ const tasks = ['Walk the dog', 'Water the plants', 'Sand the chairs']
 
 
 // HTML element references
-const newTask = document.getElementById('newTask')
+const input = document.getElementById('input')
 const btn = document.getElementById('btn')
 const tasksList = document.getElementById('tasksList')
 
-tasks.forEach(task => {
-    console.log(task)
-    tasksList.innerHTML += "<li> ${task} </li>";
-});
+// tasks.forEach(task => {
+//     tasksList.innerHTML += `<li> ${task} </li>`;
+// });
+
+// Functions
+function renderTodoInReadMode(task) {
+    tasksList.innerHTML += `<li> ${task} </li>`;
+    }
+    
+function addTodo() {
+// TODO: implement me!
+}
+
+
+// Initialize the view
+for (const task of tasks) { 
+    tasksList.append(renderTodoInReadMode(task))
+   }
+
+input.addEventListener('input', () => { 
+    btn.disabled = input.value.length < 3
+    })
+
+input.addEventListener('keydown', ({ key }) => { 
+if (key === 'Enter' && input.value.length >= 3) {
+addTodo()
+}
+})
+btn.addEventListener('click', () => { 
+addTodo()
+})
