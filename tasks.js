@@ -15,19 +15,20 @@ const tasksList = document.getElementById('tasksList')
 
 
 function renderListReadMode(task) {
-    const li = document.createElement('li') 
-    const span = document.createElement('span') 
-    const button = document.createElement('button') 
+
+    const li = document.createElement('li'); 
+    const span = document.createElement('span'); 
+    const button = document.createElement('button'); 
 
 
     span.textContent = task
     span.addEventListener('dblclick', () => { 
 
-        const idx = tasks.indexOf(task)
-            tasksList.replaceChild( 
+        const idx = tasks.indexOf(task);
+        tasksList.replaceChild( 
             renderTodoInEditMode(task),
             tasksList.childNodes[idx]
-        )
+            )
     })
 
     li.append(span)
