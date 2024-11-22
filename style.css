@@ -17,10 +17,16 @@ section#todo > button,input{
 }
 
 
+section > button {
+
+    background-color: rgb(19, 194, 19);
+
+}
+
 button:disabled {
     transition: color 0.5s ease-out;
-  }
+}
   
   button:enabled {
     transition: color 0.5s ease-out;
-  }
+}
