@@ -26,7 +26,7 @@ function renderListReadMode(task) {
 
         const idx = tasks.indexOf(task);
         tasksList.replaceChild( 
-            renderTodoInEditMode(task),
+            renderListEditMode(task),
             tasksList.childNodes[idx]
             )
     })
@@ -45,12 +45,50 @@ function renderListReadMode(task) {
     li.append(button)
     return li
 }
+
+function renderListEditMode(task) {
+
+    const li = document.createElement('li') 
+    const input = document.createElement('input') 
+    const cancelBtn = document.createElement('button') 
+    const saveBtn = document.createElement('button') 
+
+
+    input.type = 'text'
+    input.value = task
+    li.append(input)
+
+
+    saveBtn.textContent = 'Save'
+    saveBtn.addEventListener('click', () => { 
+        const idx = tasks.indexOf(task)
+        updateTodo(idx, input.value)
+    })
+    li.append(saveBtn)
     
+    cancelBtn.textContent = 'Cancel'
+    cancelBtn.addEventListener('click', () => { 
+    const idx = tasks.indexOf(task)
+        tasksList.replaceChild( 
+        renderListReadMode(task), tasksList.childNodes[idx] )
+    })
+    li.append(cancelBtn)
+    return li
+   }
+
 function addTodo() {
     
     input.value = ''
 }
 
+function updateTodo(index, description) {
+    // TODO: implement me!
+    }
+
+    
+function removeTodo(index) {
+    // TODO: implement me!
+   }
 
 // Initialize the view
 for (const task of tasks) { 
