@@ -11,3 +11,7 @@ header{
     background-color: greenyellow;
     line-height: 40px;
 }
+
+section#todo > button,input{
+    padding: 10px;
+}
