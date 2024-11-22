@@ -12,7 +12,9 @@ const tasksList = document.getElementById('tasksList')
 // });
 
 // Functions
-function renderTodoInReadMode(task) {
+
+
+function renderListReadMode(task) {
     tasksList.innerHTML += `<li> ${task} </li>`;
     }
     
@@ -23,7 +25,8 @@ function addTodo() {
 
 // Initialize the view
 for (const task of tasks) { 
-    tasksList.append(renderTodoInReadMode(task))
+    console.log(task)
+    tasksList.append(renderListReadMode(task))
    }
 
 input.addEventListener('input', () => { 
