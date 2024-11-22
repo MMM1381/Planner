@@ -19,7 +19,8 @@ function renderListReadMode(task) {
     }
     
 function addTodo() {
-// TODO: implement me!
+
+    input.value = ''
 }
 
 
@@ -36,12 +37,12 @@ input.addEventListener('input', () => btn.disabled  = input.value.length<3 )
 
 // when enter is pressed an atleast three words are typed 
 input.addEventListener('keydown', ({ key }) => { 
-if (key === 'Enter' && input.value.length >= 3) {
-addTodo()
-}
+    if (key === 'Enter' && input.value.length >= 3) {
+        addTodo()
+    }
 })
 
 // when button clicked
 btn.addEventListener('click', () => { 
-addTodo()
+    addTodo()
 })
