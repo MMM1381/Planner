@@ -58,7 +58,7 @@ function renderTask(task) {
         input.style.display = isEditing ? 'inline' : 'none';
         saveBtn.style.display = isEditing ? 'inline' : 'none';
         cancelBtn.style.display = isEditing ? 'inline' : 'none';
-        deleteBtnBtn.style.display = isEditing ? 'none' : 'inline';
+        deleteBtn.style.display = isEditing ? 'none' : 'inline';
     }
 
     return li;
