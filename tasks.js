@@ -1,114 +1,112 @@
 // State of the app
-const tasks = ['Walk the dog', 'Water the plants', 'Sand the chairs']
-
+const tasks = [];
 
 // HTML element references
-const input = document.getElementById('input')
-const btn = document.getElementById('btn')
-const tasksList = document.getElementById('tasksList')
-
-// tasks.forEach(task => {
-//     tasksList.innerHTML += `<li> ${task} </li>`;
-// });
+const input = document.getElementById('input');
+const btn = document.getElementById('btn');
+const tasksList = document.getElementById('tasksList');
 
 // Functions
 
+function renderTask(task) {
+    const li = document.createElement('li');
+    const span = document.createElement('span');
+    const input = document.createElement('input');
+    const saveBtn = document.createElement('button');
+    const cancelBtn = document.createElement('button');
+    const deleteBtn = document.createElement('button');
 
-function renderListReadMode(task) {
+    // Read Mode Elements
+    span.textContent = task;
+    span.style.display = 'inline';
+    span.addEventListener('dblclick', () => {
+        toggleEditMode(true);
+    });
 
-    const li = document.createElement('li'); 
-    const span = document.createElement('span'); 
-    const button = document.createElement('button'); 
+    deleteBtn.innerHTML = '&#10004;';
+    deleteBtn.style.margin = '20px';
+    deleteBtn.addEventListener('click', () => {
+        removeTask(li);
+    });
 
+    // Edit Mode Elements
+    input.type = 'text';
+    input.value = task;
+    input.style.display = 'none';
 
-    span.textContent = task
-    span.addEventListener('dblclick', () => { 
+    saveBtn.textContent = 'Save';
+    saveBtn.style.display = 'none';
+    saveBtn.addEventListener('click', () => {
+        if (input.value.trim().length > 0) {
+            updateTask(li, input.value);
+            toggleEditMode(false);
+        }
+    });
 
-        const idx = tasks.indexOf(task);
-        tasksList.replaceChild( 
-            renderListEditMode(task),
-            tasksList.childNodes[idx]
-            )
-    })
+    cancelBtn.textContent = 'Cancel';
+    cancelBtn.style.display = 'none';
+    cancelBtn.addEventListener('click', () => {
+        toggleEditMode(false);
+    });
 
-    li.append(span)
+    // Add all elements to the list item
+    li.append(span, input, saveBtn, cancelBtn, deleteBtn);
 
-    button.innerHTML = '&#10004;'
-    button.style.margin='20px'
-
-    button.addEventListener('click', () => { 
-        const idx = tasks.indexOf(task)
-        removeTodo(idx)
-    })
-
-
-    li.append(button)
-    return li
-}
-
-function renderListEditMode(task) {
-
-    const li = document.createElement('li') 
-    const input = document.createElement('input') 
-    const cancelBtn = document.createElement('button') 
-    const saveBtn = document.createElement('button') 
-
-
-    input.type = 'text'
-    input.value = task
-    li.append(input)
-
-
-    saveBtn.textContent = 'Save'
-    saveBtn.addEventListener('click', () => { 
-        const idx = tasks.indexOf(task)
-        updateTodo(idx, input.value)
-    })
-    li.append(saveBtn)
-    
-    cancelBtn.textContent = 'Cancel'
-    cancelBtn.addEventListener('click', () => { 
-    const idx = tasks.indexOf(task)
-        tasksList.replaceChild( 
-        renderListReadMode(task), tasksList.childNodes[idx] )
-    })
-    li.append(cancelBtn)
-    return li
-   }
-
-function addTodo() {
-    
-    input.value = ''
-}
-
-function updateTodo(index, description) {
-    // TODO: implement me!
+    // Helper function to toggle between read and edit modes
+    function toggleEditMode(isEditing) {
+        span.style.display = isEditing ? 'none' : 'inline';
+        input.style.display = isEditing ? 'inline' : 'none';
+        saveBtn.style.display = isEditing ? 'inline' : 'none';
+        cancelBtn.style.display = isEditing ? 'inline' : 'none';
     }
 
-    
-function removeTodo(index) {
-    // TODO: implement me!
-   }
+    return li;
+}
+
+function addTask() {
+    const description = input.value.trim();
+    if (description.length > 0) {
+        const taskItem = renderTask(description);
+        tasks.push(description);
+        tasksList.append(taskItem);
+        input.value = '';
+        btn.disabled = true;
+    }
+}
+
+function removeTask(taskElement) {
+    const index = Array.from(tasksList.children).indexOf(taskElement);
+    if (index > -1) {
+        tasks.splice(index, 1);
+        taskElement.remove();
+    }
+}
+
+function updateTask(taskElement, newDescription) {
+    const index = Array.from(tasksList.children).indexOf(taskElement);
+    if (index > -1) {
+        tasks[index] = newDescription;
+        const span = taskElement.querySelector('span');
+        span.textContent = newDescription;
+    }
+}
 
 // Initialize the view
-for (const task of tasks) { 
-    tasksList.append(renderListReadMode(task))
-   }
+tasks.forEach((task) => {
+    tasksList.append(renderTask(task));
+});
 
+// Enable the Add button when at least three characters are typed
+input.addEventListener('input', () => {
+    btn.disabled = input.value.trim().length < 3;
+});
 
-// when typying enabel the ADD button after atleast three words are typed
-input.addEventListener('input', () => btn.disabled  = input.value.length<3 )
-
-
-
-// when enter is pressed an atleast three words are typed 
-input.addEventListener('keydown', ({ key }) => { 
-    if (key === 'Enter' && input.value.length >= 3) {
-        addTodo()
+// Add task on Enter key press
+input.addEventListener('keydown', ({ key }) => {
+    if (key === 'Enter' && input.value.trim().length >= 3) {
+        addTask();
     }
-})
+});
 
-// when button clicked
-btn.addEventListener('click', () => { 
-    addTodo()
-})
+// Add task on button click
+btn.addEventListener('click', addTask);
