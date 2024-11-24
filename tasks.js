@@ -1,5 +1,13 @@
-// State of the app
-const tasks = [];
+// State of the app (loaded from localStorage)
+let tasks;
+try {
+    const data = localStorage.getItem('tasks');
+    tasks = data ? JSON.parse(data) : []; // Parse only if data exists
+} catch (error) {
+    console.error("Failed to parse tasks from localStorage:", error);
+    tasks = []; // Default to an empty array on error
+}
+
 
 // HTML element references
 const input = document.getElementById('input');
@@ -7,6 +15,10 @@ const btn = document.getElementById('btn');
 const tasksList = document.getElementById('tasksList');
 
 // Functions
+
+function saveTasksToLocalStorage() {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
 
 function renderTask(task) {
     const li = document.createElement('li');
@@ -58,7 +70,6 @@ function renderTask(task) {
         input.style.display = isEditing ? 'inline' : 'none';
         saveBtn.style.display = isEditing ? 'inline' : 'none';
         cancelBtn.style.display = isEditing ? 'inline' : 'none';
-        deleteBtn.style.display = isEditing ? 'none' : 'inline';
     }
 
     return li;
@@ -70,6 +81,7 @@ function addTask() {
         const taskItem = renderTask(description);
         tasks.push(description);
         tasksList.append(taskItem);
+        saveTasksToLocalStorage(); // Save to localStorage
         input.value = '';
         btn.disabled = true;
     }
@@ -80,6 +92,7 @@ function removeTask(taskElement) {
     if (index > -1) {
         tasks.splice(index, 1);
         taskElement.remove();
+        saveTasksToLocalStorage(); // Save to localStorage
     }
 }
 
@@ -89,13 +102,16 @@ function updateTask(taskElement, newDescription) {
         tasks[index] = newDescription;
         const span = taskElement.querySelector('span');
         span.textContent = newDescription;
+        saveTasksToLocalStorage(); // Save to localStorage
     }
 }
 
 // Initialize the view
-tasks.forEach((task) => {
-    tasksList.append(renderTask(task));
-});
+function loadTasks() {
+    tasks.forEach((task) => {
+        tasksList.append(renderTask(task));
+    });
+}
 
 // Enable the Add button when at least three characters are typed
 input.addEventListener('input', () => {
@@ -111,3 +127,6 @@ input.addEventListener('keydown', ({ key }) => {
 
 // Add task on button click
 btn.addEventListener('click', addTask);
+
+// Load tasks from localStorage
+loadTasks();
